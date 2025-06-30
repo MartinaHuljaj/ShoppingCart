@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbySalto.Mid.WebApi", "AbySalto.Mid\AbySalto.Mid.WebApi.csproj", "{581350E7-81CD-4117-8ABF-DFA0EC03AEE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbySalto.Mid.Infrastructure", "AbySalto.Mid.Infrastructure\AbySalto.Mid.Infrastructure.csproj", "{D7184DA9-68D4-4C4C-BF96-81125FBBB13F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E27AEF89-94C3-438C-8489-21B2D9A39E99} = {E27AEF89-94C3-438C-8489-21B2D9A39E99}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbySalto.Mid.Domain", "AbySalto.Mid.Domain\AbySalto.Mid.Domain.csproj", "{E27AEF89-94C3-438C-8489-21B2D9A39E99}"
 EndProject
@@ -36,5 +39,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F4DA9D4-5640-4E64-A751-B06FF5A1CA48}
 	EndGlobalSection
 EndGlobal

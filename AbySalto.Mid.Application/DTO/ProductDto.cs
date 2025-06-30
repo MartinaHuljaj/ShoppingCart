@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AbySalto.Mid.Application.DTO
+{
+    public class ProductDto
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public int Stock { get; set; }
+
+        public ProductDto(int id, string title, string description, decimal price, int stock)
+        {
+            Id = id;
+            Title = title;
+            Description = description;
+            Price = price;
+            Stock = stock;
+        }
+    }
+}

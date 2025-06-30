@@ -9,10 +9,6 @@ namespace AbySalto.Mid
             services.AddControllers();
             services.AddOpenApi();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AbySalto", Version = "v1" });
-            });
 
             return services;
         }

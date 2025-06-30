@@ -1,11 +1,15 @@
 
 using AbySalto.Mid.Application;
+using AbySalto.Mid.Application.Services;
+using AbySalto.Mid.Application.Services.Interfaces;
+using AbySalto.Mid.Domain.DatabaseContext;
 using AbySalto.Mid.Domain.Entities;
 using AbySalto.Mid.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace AbySalto.Mid
@@ -32,8 +36,6 @@ namespace AbySalto.Mid
 
            
 
-            builder.Services.AddControllers();
-            builder.Services.AddOpenApi();
             builder.Services.AddDbContext<AbySaltoDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -51,6 +53,7 @@ namespace AbySalto.Mid
             .AddJwtBearer(options =>
             {
                 var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+                Console.WriteLine(Convert.ToBase64String(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])));
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
@@ -61,7 +64,73 @@ namespace AbySalto.Mid
                     ValidAudience = builder.Configuration["Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception != null)
+                        {
+                            Console.WriteLine($"JWT Authentication failed: {context.Exception.GetType().Name} - {context.Exception.Message}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("JWT Authentication failed: Unknown error, context.Exception is null.");
+                        }
+                        return Task.CompletedTask;
+                    },
+                    OnMessageReceived = context =>
+                    {
+                        Console.WriteLine("JWT OnMessageReceived event fired.");
+                        return Task.CompletedTask;
+                    },
+                    OnTokenValidated = context =>
+                    {
+                        Console.WriteLine("JWT token successfully validated.");
+                        return Task.CompletedTask;
+                    },
+                    OnChallenge = context =>
+                    {
+                        Console.WriteLine("JWT OnChallenge event fired.");
+                        return Task.CompletedTask;
+                    }
+                };
             });
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShoppingCart", Version = "v1" });
+
+                var jwtSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "Enter 'Bearer' followed by your JWT token",
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+
+                c.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { jwtSecurityScheme, Array.Empty<string>() }
+                });
+            });
+
+            builder.Services.AddHttpClient("ProductApi", client =>
+            {
+                client.BaseAddress = new Uri("https://dummyjson.com/");
+            });
+
+            // Register the service that uses it
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             var app = builder.Build();
 
@@ -71,7 +140,7 @@ namespace AbySalto.Mid
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Desk Link");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping Cart v1");
                     options.RoutePrefix = string.Empty;
                 });
 
@@ -79,12 +148,15 @@ namespace AbySalto.Mid
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
-            app.UseAuthentication();
+            app.UseRouting();
 
+            app.UseAuthentication(); // must come BEFORE UseAuthorization
             app.UseAuthorization();
 
-
-            app.MapControllers();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.Run();
         }

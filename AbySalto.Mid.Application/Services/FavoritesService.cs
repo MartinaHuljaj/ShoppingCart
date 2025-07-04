@@ -38,9 +38,16 @@ namespace AbySalto.Mid.Application.Services
             }
 
             var favoriteItems = await _productRepository.GetFavoritesAsync(userId);
-            var favorites = _productMapper.FavoriteItemsToDtos(favoriteItems);
-            _cache.Set(cacheKey, favorites, TimeSpan.FromMinutes(10));
-            return favorites;
+            if (favoriteItems.Count() != 0)
+            {
+                var favorites = _productMapper.FavoriteItemsToDtos(favoriteItems);
+                _cache.Set(cacheKey, favorites, TimeSpan.FromMinutes(10));
+                return favorites;
+            }
+           
+            return new List<ProductDto>();
+
+
         }
 
         public async Task<IActionResult> AddToFavoritesAsync(string userId, int productId)

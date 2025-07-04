@@ -6,5 +6,6 @@ namespace AbySalto.Mid.Application.Services.Interfaces
     {
         Task<ProductsResponse> GetProductsAsync(int limit, int skip);
         Task<ProductDto?> GetProductByIdAsync(int productId);
+        Task<IEnumerable<ProductDto>> GetProductListByIdsAsync(IEnumerable<int> productIds);
     }
 }

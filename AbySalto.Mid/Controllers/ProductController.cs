@@ -1,7 +1,7 @@
 ﻿using AbySalto.Mid.Application.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+using AbySalto.Mid.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace AbySalto.Mid.Controllers
 {
@@ -10,9 +10,11 @@ namespace AbySalto.Mid.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        private readonly UserManager<User> _userManager;
+        public ProductController(IProductService productService, UserManager<User> userManager)
         {
             _productService = productService;
+            _userManager = userManager;
         }
 
         [HttpGet("products")]
@@ -22,7 +24,6 @@ namespace AbySalto.Mid.Controllers
             return Ok(result);
         }
         [HttpGet("products/{productId}")]
-        [Authorize]
         public async Task<IActionResult> GetProductById([FromRoute] int productId)
         {
             var result = await _productService.GetProductByIdAsync(productId);

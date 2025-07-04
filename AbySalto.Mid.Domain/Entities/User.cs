@@ -11,6 +11,8 @@ namespace AbySalto.Mid.Domain.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ICollection<FavoriteItem> FavoriteItems { get; set; } = [];
+        public ICollection<BasketItem> BasketItems { get; set; } = [];
 
         public User(string email, string firstName, string lastName)
         {

@@ -45,6 +45,38 @@ namespace AbySalto.Mid.Application.Mappers
             return favoriteProducts;
         }
 
+        public List<BasketDto> BasketItemsToDtos(IEnumerable<BasketItem> items)
+        {
+            var basketItems = new List<BasketDto>();
+            foreach (var item in items)
+            {
+                basketItems.Add(new BasketDto(
+                    item.Product.ProductId,
+                    item.Product.Title,
+                    item.Product.Description,
+                    item.Product.Category,
+                    item.Product.Price,
+                    item.Product.Stock,
+                    item.Product.Brand,
+                    item.Quantity
+                    ));
+            }
+            return basketItems;
+        }
+
+        public BasketDto BasketItemToDtos(BasketItem item)
+        {
+            return new BasketDto(
+                    item.Product.ProductId,
+                    item.Product.Title,
+                    item.Product.Description,
+                    item.Product.Category,
+                    item.Product.Price,
+                    item.Product.Stock,
+                    item.Product.Brand,
+                    item.Quantity
+                    );
+        }
         public Product ProductDtoToEntity(ProductDto item)
         {
             return new Product
@@ -58,6 +90,7 @@ namespace AbySalto.Mid.Application.Mappers
                 Brand = item.Brand
             };
         }
+
 
     }
 }

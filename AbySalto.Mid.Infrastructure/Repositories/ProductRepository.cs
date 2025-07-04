@@ -46,6 +46,22 @@ namespace AbySalto.Mid.Infrastructure.Repositories
             }
         }
 
+        public async Task<BasketItem> GetBasketItemAsync(string userId, int productId)
+        {
+            try
+            {
+                return await _context.Set<BasketItem>()
+                    .Include(bi => bi.Product)
+                    .Include(bi => bi.User)
+                    .Where(bi => bi.UserId == userId && bi.ProductId == productId)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"An error occurred while retrieving the basket item. {ex.Message}", ex);
+            }
+        }
+
         public async Task AddToFavoritesAsync(string userId, Product product)
         {
             try

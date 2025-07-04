@@ -1,10 +1,14 @@
 
 using AbySalto.Mid.Application;
+using AbySalto.Mid.Application.Mappers;
+using AbySalto.Mid.Application.Mappers.Interfaces;
 using AbySalto.Mid.Application.Services;
 using AbySalto.Mid.Application.Services.Interfaces;
 using AbySalto.Mid.Domain.DatabaseContext;
 using AbySalto.Mid.Domain.Entities;
 using AbySalto.Mid.Infrastructure;
+using AbySalto.Mid.Infrastructure.Repositories;
+using AbySalto.Mid.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -34,9 +38,7 @@ namespace AbySalto.Mid
                 });
             });
 
-           
-
-            builder.Services.AddDbContext<AbySaltoDbContext>(options =>
+            builder.Services.AddDbContextFactory<AbySaltoDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -128,9 +130,11 @@ namespace AbySalto.Mid
             {
                 client.BaseAddress = new Uri("https://dummyjson.com/");
             });
+            builder.Services.AddMemoryCache();
 
-            // Register the service that uses it
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IProductMapper, ProductMapper>();
 
             var app = builder.Build();
 

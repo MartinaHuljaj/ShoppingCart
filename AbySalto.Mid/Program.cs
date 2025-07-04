@@ -134,6 +134,7 @@ namespace AbySalto.Mid
 
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IFavoritesService, FavoritesService>();
             builder.Services.AddScoped<IProductMapper, ProductMapper>();
 
             var app = builder.Build();

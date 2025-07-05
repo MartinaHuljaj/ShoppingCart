@@ -110,7 +110,7 @@ namespace AbySalto.Mid
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
-                    Description = "Enter 'Bearer' followed by your JWT token",
+                    Description = "Enter your JWT token",
                     Reference = new OpenApiReference
                     {
                         Id = "Bearer",

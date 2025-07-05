@@ -1,14 +1,18 @@
 
 using AbySalto.Mid.Application;
+using AbySalto.Mid.Application.DTO;
 using AbySalto.Mid.Application.Mappers;
 using AbySalto.Mid.Application.Mappers.Interfaces;
 using AbySalto.Mid.Application.Services;
 using AbySalto.Mid.Application.Services.Interfaces;
+using AbySalto.Mid.Application.Validators;
 using AbySalto.Mid.Domain.DatabaseContext;
 using AbySalto.Mid.Domain.Entities;
 using AbySalto.Mid.Infrastructure;
 using AbySalto.Mid.Infrastructure.Repositories;
 using AbySalto.Mid.Infrastructure.Repositories.Interfaces;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -138,6 +142,13 @@ namespace AbySalto.Mid
             builder.Services.AddScoped<IBasketService, BasketService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IProductMapper, ProductMapper>();
+            builder.Services.AddScoped<IValidator<BasketDto>, BasketDtoValidator>();
+            builder.Services.AddScoped<IValidator<ProductDto>, ProductDtoValidator>();
+            builder.Services.AddScoped<AddToBasketValidator>();
+            builder.Services.AddScoped<RemoveFromBasketValidator>();
+            builder.Services.AddScoped<FavoritesValidator>();
+
+
 
             var app = builder.Build();
 

@@ -85,7 +85,7 @@ namespace AbySalto.Mid.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"{ex.Message}", ex);
+                throw new InvalidOperationException($"An error occured while adding to favorites. {ex.Message}", ex);
             }
         }
 
@@ -127,7 +127,7 @@ namespace AbySalto.Mid.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"An error occurred while retrieving basket items. {ex.Message}", ex);
+                throw new InvalidOperationException($"An error occurred while adding to basket. {ex.Message}", ex);
             }
         }
 
@@ -141,6 +141,10 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                 {
                     _context.Set<FavoriteItem>().Remove(favoriteItem);
                     await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Product is not in your favorites list");
                 }
             }
             catch (Exception ex)
@@ -159,6 +163,10 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                 {
                     _context.Set<BasketItem>().Remove(basketItem);
                     await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Product is not in your basket");
                 }
             }
             catch (Exception ex)

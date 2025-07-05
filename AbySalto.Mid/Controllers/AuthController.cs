@@ -1,10 +1,12 @@
 ﻿using AbySalto.Mid.Application.DTO;
+using AbySalto.Mid.Application.Services.Interfaces;
 using AbySalto.Mid.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace AbySalto.Mid.WebApi.Controllers
@@ -16,11 +18,13 @@ namespace AbySalto.Mid.WebApi.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IAuthService _authService;
 
-        public AuthController(UserManager<User> userManager, IConfiguration configuration)
+        public AuthController(UserManager<User> userManager, IConfiguration configuration, IAuthService authService)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _authService = authService;
         }
 
         [HttpPost("register")]
@@ -44,32 +48,46 @@ namespace AbySalto.Mid.WebApi.Controllers
             if (user == null || !await _userManager.CheckPasswordAsync(user, userDto.Password))
                 return Unauthorized("Invalid credentials");
 
-            var token = GenerateJwtToken(user);
-            return Ok(new { token });
+
+            var accessToken = _authService.GenerateJwtToken(user);
+            var refreshToken = _authService.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new
+            {
+                token = accessToken,
+                refreshToken = refreshToken
+            });
         }
 
-        private string GenerateJwtToken(User user)
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequestDto tokenRequest)
         {
-            var claims = new[]
+            var principal = _authService.GetPrincipalFromExpiredToken(tokenRequest.AccessToken);
+            if (principal == null) return BadRequest("Invalid access token.");
+
+            var userId = principal.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null || user.RefreshToken != tokenRequest.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                new Claim("id", user.Id),
-                new Claim("firstName", user.FirstName ?? ""),
-                new Claim("lastName", user.LastName ?? ""),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+                return Unauthorized("Invalid refresh token.");
+            }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var newAccessToken = _authService.GenerateJwtToken(user);
+            var newRefreshToken = _authService.GenerateRefreshToken();
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: creds);
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await _userManager.UpdateAsync(user);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return Ok(new
+            {
+                token = newAccessToken,
+                refreshToken = newRefreshToken
+            });
         }
     }
 }

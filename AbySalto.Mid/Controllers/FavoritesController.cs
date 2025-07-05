@@ -42,5 +42,18 @@ namespace AbySalto.Mid.WebApi.Controllers
             var result = await _favoritesService.AddToFavoritesAsync(userId, productId);
             return result;
         }
+
+        [HttpDelete("favorites/{productId}")]
+        [Authorize]
+        public async Task<IActionResult> RemoveFromFavorites([FromRoute] int productId)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { Message = "User not authenticated." });
+            }
+            var result = await _favoritesService.RemoveFromFavoritesAsync(userId, productId);
+            return result;
+        }
     }
 }

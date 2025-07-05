@@ -83,5 +83,22 @@ namespace AbySalto.Mid.Application.Services
             return new OkObjectResult(new { Message = "Product added to basket successfully." });
         }
 
+        public async Task<IActionResult> RemoveFromBasketAsync(string userId, int productId)
+        {
+            var basketItem = await _productRepository.GetBasketItemAsync(userId, productId);
+            if (basketItem == null)
+            {
+                return new NotFoundObjectResult(new { Message = "Product not found in basket." });
+            }
+            await _productRepository.RemoveItemFromBasketAsync(productId, userId);
+            var cacheKey = $"basket:{userId}";
+            if (_cache.TryGetValue(cacheKey, out List<BasketDto> cachedBasket))
+            {
+                cachedBasket.RemoveAll(b => b.Id == productId);
+                _cache.Set(cacheKey, cachedBasket, TimeSpan.FromMinutes(10));
+            }
+            return new OkObjectResult(new { Message = "Product removed from basket successfully." });
+        }
+
     }
 }

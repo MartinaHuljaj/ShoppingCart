@@ -122,5 +122,41 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                 throw new InvalidOperationException($"An error occurred while retrieving basket items. {ex.Message}", ex);
             }
         }
+
+        public async Task RemoveItemFromFavoritesAsync(int productId, string userId)
+        {
+            try
+            {
+                var favoriteItem = await _context.Set<FavoriteItem>()
+                    .FirstOrDefaultAsync(f => f.ProductId == productId && f.UserId == userId);
+                if (favoriteItem != null)
+                {
+                    _context.Set<FavoriteItem>().Remove(favoriteItem);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"An error occurred while removing the item from favorites. {ex.Message}", ex);
+            }
+        }
+
+        public async Task RemoveItemFromBasketAsync(int productId, string userId)
+        {
+            try
+            {
+                var basketItem = await _context.Set<BasketItem>()
+                    .FirstOrDefaultAsync(b => b.ProductId == productId && b.UserId == userId);
+                if (basketItem != null)
+                {
+                    _context.Set<BasketItem>().Remove(basketItem);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"An error occurred while removing the item from the basket. {ex.Message}", ex);
+            }
+        }
     }
 }

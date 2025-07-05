@@ -39,5 +39,17 @@ namespace AbySalto.Mid.Controllers
             var result = await _basketService.AddToBasketAsync(userId, productId);
             return result;
         }
+        [HttpDelete("basket/{productId}")]
+        [Authorize]
+        public async Task<IActionResult> RemoveFromBasketAsync([FromRoute] int productId)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { Message = "User not authenticated." });
+            }
+            var result = await _basketService.RemoveFromBasketAsync(userId, productId);
+            return result;
+        }
     }
 }

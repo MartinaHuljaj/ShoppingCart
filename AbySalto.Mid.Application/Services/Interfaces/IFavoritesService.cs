@@ -13,5 +13,6 @@ namespace AbySalto.Mid.Application.Services.Interfaces
     {
         Task<IEnumerable<ProductDto>> GetFavoritesAsync(string userId);
         Task<IActionResult> AddToFavoritesAsync(string userId, int productId);
+        Task<IActionResult> RemoveFromFavoritesAsync(string userId, int productId);
     }
 }

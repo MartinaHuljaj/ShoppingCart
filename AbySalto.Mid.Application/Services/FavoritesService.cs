@@ -69,5 +69,20 @@ namespace AbySalto.Mid.Application.Services
             }
             return new OkObjectResult(new { Message = "Product added to favorites successfully." });
         }
+        public async Task<IActionResult> RemoveFromFavoritesAsync(string userId, int productId)
+        {
+            await _productRepository.RemoveItemFromFavoritesAsync(productId, userId);
+            var cacheKey = $"favorites:{userId}";
+            if (_cache.TryGetValue(cacheKey, out List<ProductDto> products))
+            {
+                var productToRemove = products.FirstOrDefault(p => p.Id == productId);
+                if (productToRemove != null)
+                {
+                    products.Remove(productToRemove);
+                    _cache.Set(cacheKey, products, TimeSpan.FromMinutes(10));
+                }
+            }
+            return new OkObjectResult(new { Message = "Product removed from favorites successfully." });
+        }
     }
 }

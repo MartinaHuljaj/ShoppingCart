@@ -31,15 +31,7 @@ namespace AbySalto.Mid.Controllers
         [Authorize]
         public async Task<IActionResult> AddToBasketAsync([FromRoute] int productId, int quantity = 1)
         {
-            if (quantity <= 0)
-            {
-                return BadRequest(new { Message = "Quantity must be greater than zero." });
-            }
             var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized(new { Message = "User not authenticated." });
-            }
             var result = await _basketService.AddToBasketAsync(userId, productId, quantity);
             return result;
         }
@@ -48,10 +40,6 @@ namespace AbySalto.Mid.Controllers
         public async Task<IActionResult> RemoveFromBasketAsync([FromRoute] int productId)
         {
             var userId = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized(new { Message = "User not authenticated." });
-            }
             var result = await _basketService.RemoveFromBasketAsync(userId, productId);
             return result;
         }

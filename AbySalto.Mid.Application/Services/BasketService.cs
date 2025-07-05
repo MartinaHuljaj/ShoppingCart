@@ -1,7 +1,6 @@
 ﻿using AbySalto.Mid.Application.DTO;
 using AbySalto.Mid.Application.Mappers.Interfaces;
 using AbySalto.Mid.Application.Services.Interfaces;
-using AbySalto.Mid.Domain.Entities;
 using AbySalto.Mid.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -40,11 +39,15 @@ namespace AbySalto.Mid.Application.Services
             return new List<BasketDto>();
         }
 
-        public async Task<IActionResult> AddToBasketAsync(string userId, int productId)
+        public async Task<IActionResult> AddToBasketAsync(string userId, int productId, int quantity)
         {
             var productDto = await _productService.GetProductByIdAsync(productId);
+            if (productDto == null || productDto.Stock < quantity)
+            {
+                throw new InvalidOperationException("There is not enoguh product in stock");
+            }
             var productEntity = _productMapper.ProductDtoToEntity(productDto);
-            await _productRepository.AddToBasketAsync(userId, productEntity);
+            await _productRepository.AddToBasketAsync(userId, productEntity, quantity);
             var basketItem =await _productRepository.GetBasketItemAsync(userId, productId);
 
             var cacheKey = $"basket:{userId}";

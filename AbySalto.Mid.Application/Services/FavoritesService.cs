@@ -1,16 +1,9 @@
 ﻿using AbySalto.Mid.Application.DTO;
 using AbySalto.Mid.Application.Mappers.Interfaces;
 using AbySalto.Mid.Application.Services.Interfaces;
-using AbySalto.Mid.Domain.Entities;
 using AbySalto.Mid.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AbySalto.Mid.Application.Services
 {

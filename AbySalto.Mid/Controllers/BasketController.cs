@@ -29,14 +29,18 @@ namespace AbySalto.Mid.Controllers
 
         [HttpPost("basket/{productId}")]
         [Authorize]
-        public async Task<IActionResult> AddToBasketAsync([FromRoute] int productId)
+        public async Task<IActionResult> AddToBasketAsync([FromRoute] int productId, int quantity = 1)
         {
+            if (quantity <= 0)
+            {
+                return BadRequest(new { Message = "Quantity must be greater than zero." });
+            }
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "User not authenticated." });
             }
-            var result = await _basketService.AddToBasketAsync(userId, productId);
+            var result = await _basketService.AddToBasketAsync(userId, productId, quantity);
             return result;
         }
         [HttpDelete("basket/{productId}")]

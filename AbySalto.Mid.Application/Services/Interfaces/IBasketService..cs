@@ -6,7 +6,7 @@ namespace AbySalto.Mid.Application.Services.Interfaces
     public interface IBasketService
     {
         Task<IEnumerable<BasketDto>> GetBasketAsync(string userId);
-        Task<IActionResult> AddToBasketAsync(string userId, int productId);
+        Task<IActionResult> AddToBasketAsync(string userId, int productId, int quantity);
         Task<IActionResult> RemoveFromBasketAsync(string userId, int productId);
     }
 }

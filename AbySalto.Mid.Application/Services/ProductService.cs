@@ -1,6 +1,5 @@
 ﻿using AbySalto.Mid.Application.DTO;
 using AbySalto.Mid.Application.Services.Interfaces;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Json;
 

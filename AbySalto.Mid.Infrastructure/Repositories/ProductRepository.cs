@@ -89,17 +89,21 @@ namespace AbySalto.Mid.Infrastructure.Repositories
             }
         }
 
-        public async Task AddToBasketAsync(string userId, Product product)
+        public async Task AddToBasketAsync(string userId, Product product, int quantity)
         {
             try
             {
                 var item = await _context.Set<BasketItem>()
-                    .Where(f => f.ProductId == product.ProductId && f.UserId == userId)
+                    .Include(bi => bi.Product)
+                    .Where(bi => bi.ProductId == product.ProductId && bi.UserId == userId)
                     .FirstOrDefaultAsync();
-
                 if (item != null)
                 {
-                    item.Quantity++;
+                    if (item.Product.Stock < item.Quantity + quantity)
+                    {
+                        throw new InvalidOperationException("There is not enoguh product in stock");
+                    }
+                    item.Quantity += quantity;
                     _context.Set<BasketItem>().Update(item);
                 }
                 else
@@ -108,10 +112,14 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                     {
                         UserId = userId,
                         ProductId = product.ProductId,
-                        Quantity = 1
+                        Quantity = quantity
                     };
-                    _context.Set<Product>().Add(product);
-                    await _context.SaveChangesAsync();
+                    if (GetProductAsync(product.ProductId) == null) 
+                    {
+                        _context.Set<Product>().Add(product);
+                        await _context.SaveChangesAsync();
+                    }
+
                     _context.Set<BasketItem>().Add(basketItem);
                 }
 
@@ -157,6 +165,13 @@ namespace AbySalto.Mid.Infrastructure.Repositories
             {
                 throw new InvalidOperationException($"An error occurred while removing the item from the basket. {ex.Message}", ex);
             }
+        }
+
+        public Task<Product?> GetProductAsync(int productId)
+        { 
+            return _context.Set<Product>()
+                .Where(p => p.ProductId == productId)
+                .FirstOrDefaultAsync();
         }
     }
 }

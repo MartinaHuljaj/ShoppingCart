@@ -1,11 +1,6 @@
 ﻿using AbySalto.Mid.Application.DTO;
 using AbySalto.Mid.Application.Mappers.Interfaces;
 using AbySalto.Mid.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AbySalto.Mid.Application.Mappers
 {

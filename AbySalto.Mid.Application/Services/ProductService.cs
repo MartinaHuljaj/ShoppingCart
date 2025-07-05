@@ -1,5 +1,6 @@
 ﻿using AbySalto.Mid.Application.DTO;
 using AbySalto.Mid.Application.Services.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Json;
 
@@ -15,13 +16,15 @@ namespace AbySalto.Mid.Application.Services
             _cache = cache;
         }
 
-        public async Task<ProductsResponse> GetProductsAsync(int limit, int skip)
+        public async Task<ProductsResponse> GetProductsAsync(int limit, int skip, string sortBy, string order)
         {
-            string cacheKey = $"products:limit={limit}:skip={skip}";
+            sortBy = sortBy.ToLower();
+            order = order.ToLower();
+            string cacheKey = $"products:limit={limit}:skip={skip}:sortBy={sortBy}:sortOrder={order}";
             if (!_cache.TryGetValue(cacheKey, out ProductsResponse productsResponse))
             {
                 var client = _httpClientFactory.CreateClient("ProductApi");
-                string url = $"products?limit={limit}&skip={skip}";
+                string url = $"products?limit={limit}&skip={skip}&sortBy={sortBy}&order={order}";
                 productsResponse = await client.GetFromJsonAsync<ProductsResponse>(url);
                 if (productsResponse != null)
                 {

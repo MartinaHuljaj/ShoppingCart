@@ -18,9 +18,13 @@ namespace AbySalto.Mid.Controllers
         }
 
         [HttpGet("products")]
-        public async Task<IActionResult> GetAllProducts([FromQuery] int limit = 10, [FromQuery] int skip = 0)
+        public async Task<IActionResult> GetAllProducts(
+            [FromQuery] int limit = 10,
+            [FromQuery] int skip = 0,
+            [FromQuery] string sortBy = "id",
+            [FromQuery] string order = "asc")
         {
-            var result = await _productService.GetProductsAsync(limit, skip);
+            var result = await _productService.GetProductsAsync(limit, skip, sortBy, order);
             return Ok(result);
         }
         [HttpGet("products/{productId}")]

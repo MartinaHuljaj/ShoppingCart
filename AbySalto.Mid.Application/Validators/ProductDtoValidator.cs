@@ -1,10 +1,6 @@
 ﻿using AbySalto.Mid.Application.DTO;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AbySalto.Mid.Domain.ValidationMessages;
 
 namespace AbySalto.Mid.Application.Validators
 {
@@ -16,7 +12,7 @@ namespace AbySalto.Mid.Application.Validators
             RuleFor(b => b.Description).MaximumLength(500).NotNull();
             RuleFor(b => b.Category).MaximumLength(50).NotNull();
             RuleFor(b => b.Price).GreaterThan(0).NotNull();
-            RuleFor(b => b.Stock).GreaterThan(0).NotNull().WithMessage("The product is out of stock");
+            RuleFor(b => b.Stock).GreaterThan(0).NotNull().WithMessage(ValidationMessages.ProductOutOfStock);
             RuleFor(b => b.Brand).MaximumLength(50).NotNull();
         }
     }

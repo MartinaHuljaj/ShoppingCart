@@ -1,15 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AbySalto.Mid.Domain.ValidationMessages;
+using System.ComponentModel.DataAnnotations;
 
 namespace AbySalto.Mid.Application.DTO
 {
     public class RegisterUserDto
     {
-        [EmailAddress(ErrorMessage = "Invalid email address format."), Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = ValidationMessages.InvalidEmailFormat), Required(ErrorMessage = ValidationMessages.Required)]
         public string Email { get; set; }
+        [Required(ErrorMessage = ValidationMessages.Required)]
         public string Password { get; set; }
-        [Required(ErrorMessage = "First name is required.")]
+        [Required(ErrorMessage = ValidationMessages.Required)]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Last name is required.")]
+        [Required(ErrorMessage = ValidationMessages.Required)]
         public string LastName { get; set; }
 
         public RegisterUserDto(string email, string password, string firstName, string lastName)

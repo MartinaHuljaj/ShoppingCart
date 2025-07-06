@@ -1,5 +1,6 @@
 ﻿using AbySalto.Mid.Application.DTO;
 using AbySalto.Mid.Application.Services.Interfaces;
+using AbySalto.Mid.Domain.ValidationMessages;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Json;
 
@@ -31,7 +32,7 @@ namespace AbySalto.Mid.Application.Services
                 }
                 else
                 {
-                    throw new Exception("Failed to retrieve products.");
+                    throw new Exception(ValidationMessages.ProductFetchFailed);
                 }
             }
             return productsResponse;
@@ -48,6 +49,10 @@ namespace AbySalto.Mid.Application.Services
                 if (product != null)
                 {
                     _cache.Set(cacheKey, product, TimeSpan.FromMinutes(10));
+                }
+                else
+                {
+                    throw new Exception(ValidationMessages.ProductNotFound);
                 }
             }
             return product;
@@ -67,6 +72,10 @@ namespace AbySalto.Mid.Application.Services
                     if (product != null)
                     {
                         _cache.Set(cacheKey, product, TimeSpan.FromMinutes(10));
+                    }
+                    else
+                    {
+                        throw new Exception(ValidationMessages.ProductNotFound);
                     }
                 }
                 if (product != null)

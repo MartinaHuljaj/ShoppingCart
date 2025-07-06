@@ -1,5 +1,7 @@
 ﻿using AbySalto.Mid.Application.Services.Interfaces;
+using AbySalto.Mid.Application.Validators;
 using AbySalto.Mid.Domain.Entities;
+using AbySalto.Mid.Domain.ValidationMessages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +35,7 @@ namespace AbySalto.Mid.Controllers
             var result = await _productService.GetProductByIdAsync(productId);
             if (result == null)
             {
-                return NotFound(new { Message = "Product not found." });
+                return NotFound(new { Message = ValidationMessages.ProductNotFound });
             }
             return Ok(result);
         }

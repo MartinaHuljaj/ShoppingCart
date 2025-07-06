@@ -168,7 +168,7 @@ namespace AbySalto.Mid
 
             app.UseRouting();
 
-            app.UseAuthentication(); // must come BEFORE UseAuthorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

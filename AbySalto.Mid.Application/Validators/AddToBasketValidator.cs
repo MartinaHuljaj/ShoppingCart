@@ -1,9 +1,5 @@
 ﻿using AbySalto.Mid.Application.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AbySalto.Mid.Domain.ValidationMessages;
 
 namespace AbySalto.Mid.Application.Validators
 {
@@ -12,13 +8,13 @@ namespace AbySalto.Mid.Application.Validators
         public void Validate(string userId, int quantity, ProductDto productDto)
         {
             if (string.IsNullOrEmpty(userId))
-                throw new InvalidOperationException("User not authorized.");
+                throw new InvalidOperationException(ValidationMessages.UnauthorizedUser);
 
             if (quantity <= 0)
-                throw new InvalidOperationException("Quantity must be greater than zero.");
+                throw new InvalidOperationException(ValidationMessages.QuantityGreaterThanZero);
 
             if (productDto == null || productDto.Stock < quantity)
-                throw new InvalidOperationException("There is not enough product in stock.");
+                throw new InvalidOperationException(ValidationMessages.ProductOutOfStock);
         }
     }
 }

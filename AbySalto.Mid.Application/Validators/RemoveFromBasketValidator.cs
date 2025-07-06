@@ -1,10 +1,5 @@
-﻿using AbySalto.Mid.Application.DTO;
-using AbySalto.Mid.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AbySalto.Mid.Domain.Entities;
+using AbySalto.Mid.Domain.ValidationMessages;
 
 namespace AbySalto.Mid.Application.Validators
 {
@@ -13,10 +8,10 @@ namespace AbySalto.Mid.Application.Validators
         public void Validate(BasketItem item, string userId)
         {
             if (string.IsNullOrEmpty(userId))
-                throw new InvalidOperationException("User not authorized.");
+                throw new InvalidOperationException(ValidationMessages.UnauthorizedUser);
 
             if (item == null)
-                throw new InvalidOperationException("Product not found in basket.");
+                throw new InvalidOperationException(ValidationMessages.ProductNotInBasket);
         }
     }
 }

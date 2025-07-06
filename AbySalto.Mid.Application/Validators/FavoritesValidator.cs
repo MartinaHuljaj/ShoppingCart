@@ -1,10 +1,5 @@
 ﻿using AbySalto.Mid.Application.DTO;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AbySalto.Mid.Domain.ValidationMessages;
 
 namespace AbySalto.Mid.Application.Validators
 {
@@ -13,16 +8,16 @@ namespace AbySalto.Mid.Application.Validators
         public void Validate(string userId, ProductDto product)
         {
             if (string.IsNullOrEmpty(userId))
-                throw new InvalidOperationException("User not authorized.");
+                throw new InvalidOperationException(ValidationMessages.UnauthorizedUser);
             if (product == null)
-                throw new InvalidOperationException("Product doesn't exist.");
+                throw new InvalidOperationException(ValidationMessages.ProductNotFound);
         }
         public void Validate(string userId, int productId)
         {
             if (string.IsNullOrEmpty(userId))
-                throw new InvalidOperationException("User not authorized.");
+                throw new InvalidOperationException(ValidationMessages.UnauthorizedUser);
             if (productId <= 0)
-                throw new InvalidOperationException("Product ID must be greater than zero.");
+                throw new InvalidOperationException(ValidationMessages.ProductIdLessThenZero);
         }
     }
 }

@@ -3,6 +3,7 @@ using AbySalto.Mid.Domain.Entities;
 using AbySalto.Mid.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using AbySalto.Mid.Domain.ValidationMessages;
 
 namespace AbySalto.Mid.Infrastructure.Repositories
 {
@@ -70,7 +71,7 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                     .AnyAsync(f => f.ProductId == product.ProductId && f.UserId == userId);
 
                 if (exists)
-                    throw new InvalidOperationException("The product is already in the user's favorites.");
+                    throw new InvalidOperationException(ValidationMessages.ProductAlreadyInFavorites);
 
                 var favoriteItem = new FavoriteItem
                 {
@@ -101,7 +102,7 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                 {
                     if (item.Product.Stock < item.Quantity + quantity)
                     {
-                        throw new InvalidOperationException("There is not enoguh product in stock");
+                        throw new InvalidOperationException(ValidationMessages.ProductOutOfStock);
                     }
                     item.Quantity += quantity;
                     _context.Set<BasketItem>().Update(item);
@@ -144,7 +145,7 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                 }
                 else
                 {
-                    throw new InvalidOperationException("Product is not in your favorites list");
+                    throw new InvalidOperationException(ValidationMessages.ProductNotInFavorites);
                 }
             }
             catch (Exception ex)
@@ -166,7 +167,7 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                 }
                 else
                 {
-                    throw new InvalidOperationException("Product is not in your basket");
+                    throw new InvalidOperationException(ValidationMessages.ProductNotInBasket);
                 }
             }
             catch (Exception ex)

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AbySalto.Mid.Domain.Entities;
 
-namespace AbySalto.Mid.Domain.DatabaseContext
+namespace AbySalto.Mid.Infrastructure.Context
 {
     public class AbySaltoDbContext(DbContextOptions<AbySaltoDbContext> options) : DbContext(options)
     {

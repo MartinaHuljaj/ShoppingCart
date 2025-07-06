@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AbySalto.Mid.Domain.Migrations
+namespace AbySalto.Mid.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class AddingRefreshTokenToUser : Migration

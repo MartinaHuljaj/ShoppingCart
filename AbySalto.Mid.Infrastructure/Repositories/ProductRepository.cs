@@ -1,9 +1,9 @@
-﻿using AbySalto.Mid.Domain.DatabaseContext;
-using AbySalto.Mid.Domain.Entities;
+﻿using AbySalto.Mid.Domain.Entities;
 using AbySalto.Mid.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AbySalto.Mid.Domain.ValidationMessages;
+using AbySalto.Mid.Infrastructure.Context;
 
 namespace AbySalto.Mid.Infrastructure.Repositories
 {

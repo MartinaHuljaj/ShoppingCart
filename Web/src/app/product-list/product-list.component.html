@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="filters">
+        <mat-form-field appearance="outline">
+            <mat-label>Sort By</mat-label>
+            <mat-select [(value)]="sortBy" (selectionChange)="onSortChange()">
+                <mat-option value="id">ID</mat-option>
+                <mat-option value="title">Title</mat-option>
+                <mat-option value="price">Price</mat-option>
+                <mat-option value="stock">Stock</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Order</mat-label>
+            <mat-select [(value)]="order" (selectionChange)="fetchProducts()">
+                <mat-option value="asc">Ascending</mat-option>
+                <mat-option value="desc">Descending</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="(products$ | async)?.length! > 0; else noData" class="product-container">
+        <mat-card *ngFor="let product of products$ | async;">
+            <mat-card-header>
+                <mat-card-title>{{ product.title }}</mat-card-title>
+                <mat-card-subtitle>{{ product.brand }} - {{ product.category }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ product.description }}</p>
+                <p><strong>Price:</strong> ${{ product.price }}</p>
+                <p><strong>Stock:</strong> {{ product.stock }}</p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <ng-template #noData>
+        <p>No products available.</p>
+    </ng-template>
+
+    <mat-paginator [length]="total$ | async" [pageSize]="limit" [pageSizeOptions]="[5, 10, 20]" [pageIndex]="pageIndex"
+        (page)="onPageChange($event)">
+    </mat-paginator>
+</div>

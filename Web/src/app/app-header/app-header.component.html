@@ -1,0 +1,13 @@
+<mat-toolbar color="primary" class="app-header">
+    <span class="app-title">Shopping App</span>
+    <span class="spacer"></span>
+    <button *ngIf="!isAuthenticated" mat-icon-button aria-label="Login" (click)="onLogin()">
+        <mat-icon>login</mat-icon>
+    </button>
+    <button *ngIf="isAuthenticated" mat-icon-button aria-label="Favorites" (click)="onViewFavorites()">
+        <mat-icon>favorite</mat-icon>
+    </button>
+    <button *ngIf="isAuthenticated" mat-icon-button aria-label="Cart" (click)="onViewCart()">
+        <mat-icon>shopping_cart</mat-icon>
+    </button>
+</mat-toolbar>

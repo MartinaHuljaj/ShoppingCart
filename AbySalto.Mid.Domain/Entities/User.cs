@@ -6,8 +6,8 @@ namespace AbySalto.Mid.Domain.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string RefreshToken { get; set; }
-        public DateTime RefreshTokenExpiryTime { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
         public ICollection<FavoriteItem> FavoriteItems { get; set; } = [];
         public ICollection<BasketItem> BasketItems { get; set; } = [];
 

@@ -18,11 +18,10 @@ export class AppHeaderComponent implements OnInit {
     isAuthenticated = false;
     constructor(private router: Router, private auth: AuthService, private cdr: ChangeDetectorRef) { }
     ngOnInit() {
-    this.auth.loggedIn$.subscribe(status => {
-      console.log('Authentication status:', status);
-      this.isAuthenticated = status;
-      this.cdr.markForCheck();
-    });
+        this.auth.loggedIn$.subscribe(status => {
+            this.isAuthenticated = status;
+            this.cdr.markForCheck();
+        });
     }
     goToProducts() {
         this.router.navigate(['']);
@@ -36,7 +35,7 @@ export class AppHeaderComponent implements OnInit {
     }
 
 
-    onViewCart() {
-
+    onViewBasket() {
+        this.router.navigate(['/basket']);
     }
 }

@@ -9,6 +9,7 @@ import { authInterceptor } from './services/auth.interceptor';
 import { LoginComponent } from './login/login.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { RegisterComponent } from './register/register.component';
+import { BasketComponent } from './basket/basket.component';
 
 
 
@@ -23,7 +24,8 @@ import { RegisterComponent } from './register/register.component';
     AppHeaderComponent,
     LoginComponent,
     FavoritesComponent,
-    RegisterComponent
+    RegisterComponent,
+    BasketComponent
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

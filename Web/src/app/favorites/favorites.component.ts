@@ -34,24 +34,37 @@ import { MatTableModule } from "@angular/material/table";
 
 })
 export class FavoritesComponent implements OnInit {
-  favorites: Product[] = [];
+    favorites: Product[] = [];
 
-  constructor(private favoritesService: FavoritesService, private cdr: ChangeDetectorRef) {}
+    constructor(private favoritesService: FavoritesService, private cdr: ChangeDetectorRef) { }
 
-  ngOnInit(): void {
-    this.loadFavorites();
-  }
+    ngOnInit(): void {
+        this.loadFavorites();
+    }
 
-  private loadFavorites(): void {
-    this.favoritesService.getFavorites().subscribe({
-      next: (products) => {
-        this.favorites = products;
-        this.cdr.markForCheck();
-      },
-      error: (err) => {
-        console.error('Error loading favorites:', err);
-      }
-    });
-  }
+    private loadFavorites(): void {
+        this.favoritesService.getFavorites().subscribe({
+            next: (products) => {
+                this.favorites = products;
+                this.cdr.markForCheck();
+            },
+            error: (err) => {
+                console.error('Error loading favorites:', err);
+            }
+        });
+    }
 
+    removeFromFavorites(productId: number): void {
+        this.favoritesService.removeFromFavorites(productId).subscribe({
+            next: () => {
+                const updated = this.favorites.filter(item => item.id !== productId);
+                this.favorites = [...updated];
+                this.cdr.markForCheck();
+
+            },
+            error: err => {
+                console.error('Error removing from favorites:', err);
+            }
+        });
+    }
 }

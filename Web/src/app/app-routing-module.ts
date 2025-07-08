@@ -5,6 +5,7 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { LoginComponent } from './login/login.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { RegisterComponent } from './register/register.component';
+import { BasketComponent } from './basket/basket.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,9 @@ const routes: Routes = [
   },
   {
     path: 'register', component: RegisterComponent
+  },
+  {
+    path:'basket', component: BasketComponent
   }
 ];
 

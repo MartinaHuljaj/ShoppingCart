@@ -1,0 +1,25 @@
+<div *ngIf="basketItems?.length! > 0; else noData" class="product-container">
+    <mat-card *ngFor="let basketItem of basketItems">
+        <mat-card-header>
+            <div class="card-header-content">
+                <div>
+                    <mat-card-title>{{ basketItem.title }}</mat-card-title>
+                    <mat-card-subtitle>{{ basketItem.brand }} - {{ basketItem.category }}</mat-card-subtitle>
+                </div>
+                <button mat-icon-button color="warn" (click)="removeFromBasket(basketItem.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </mat-card-header>
+
+        <mat-card-content>
+            <p>{{ basketItem.description }}</p>
+            <p><strong>Price:</strong> ${{ basketItem.price }}</p>
+            <p><strong>Quantity:</strong> {{ basketItem.quantity }}</p>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<ng-template #noData>
+    <p>No products available.</p>
+</ng-template>

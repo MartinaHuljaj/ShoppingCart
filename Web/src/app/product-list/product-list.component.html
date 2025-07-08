@@ -6,7 +6,6 @@
                 <mat-option value="id">ID</mat-option>
                 <mat-option value="title">Title</mat-option>
                 <mat-option value="price">Price</mat-option>
-                <mat-option value="stock">Stock</mat-option>
             </mat-select>
         </mat-form-field>
 
@@ -33,13 +32,12 @@
             <mat-card-content>
                 <p>{{ product.description }}</p>
                 <p><strong>Price:</strong> ${{ product.price }}</p>
-                <p><strong>Stock:</strong> {{ product.stock }}</p>
 
-                <div class="cart-actions">
+                <div class="basket-actions">
                     <mat-form-field appearance="outline" class="qty-input" density="compact">
                         <input #quantity matInput type="number" min="1" max="{{ product.stock }}" [value]="1" class="input-field"/>
                     </mat-form-field>
-                    <button mat-raised-button color="primary" (click)="addToCart(product, quantity.valueAsNumber)">Add to Cart</button>
+                    <button mat-raised-button color="primary" (click)="addToBasket(product, quantity.valueAsNumber)">Add to Basket</button>
                 </div>
             </mat-card-content>
         </mat-card>

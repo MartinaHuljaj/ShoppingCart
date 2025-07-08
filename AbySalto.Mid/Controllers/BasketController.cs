@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AbySalto.Mid.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class BasketController : ControllerBase
     {
         private readonly IBasketService _basketService;

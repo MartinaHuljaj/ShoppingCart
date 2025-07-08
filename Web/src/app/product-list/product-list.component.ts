@@ -15,6 +15,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Product } from '../models/product.model';
 import { FormsModule } from '@angular/forms';
 import { FavoritesService } from '../services/favorites.service';
+import { BasketService } from '../services/basket.service';
 
 @Component({
     selector: 'app-product-list',
@@ -49,7 +50,7 @@ export class ProductListComponent implements OnInit {
     sortBy = 'id';
     order: 'asc' | 'desc' = 'asc';
 
-    constructor(private productService: ProductService, private favoritesService: FavoritesService, private cdr: ChangeDetectorRef) { }
+    constructor(private productService: ProductService, private favoritesService: FavoritesService, private BasketService:BasketService, private cdr: ChangeDetectorRef) { }
 
     ngOnInit(): void {
         this.fetchProducts();
@@ -78,8 +79,15 @@ export class ProductListComponent implements OnInit {
         this.fetchProducts();
     }
 
-    addToCart(product: Product, quantity: number): void {
-        console.log('Add to cart:', product, 'Quantity:', quantity);
+    addToBasket(product: Product, quantity: number): void {
+        this.BasketService.addToBasket(product.id, quantity).subscribe({
+            next: () => {
+                console.log('Product added to basket:', product);
+            },
+            error: (err: any) => {
+                console.error('Error adding product to basket:', err);
+            }
+        });
     }
     addToFavorites(product: Product): void {
         this.favoritesService.addToFavorites(product.id).subscribe({

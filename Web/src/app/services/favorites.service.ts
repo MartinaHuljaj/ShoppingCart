@@ -16,4 +16,7 @@ export class FavoritesService {
   addToFavorites(productId: number): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/Favorites/favorites/${productId}`, {});
   }
+  removeFromFavorites(productId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/Favorites/favorites/${productId}`);
+  }
 }

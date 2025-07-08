@@ -1,0 +1,60 @@
+<mat-card class="login-card">
+  <h1>Register</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" />
+      <mat-error *ngIf="form.get('firstName')?.hasError('required')">
+        First name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" />
+      <mat-error *ngIf="form.get('lastName')?.hasError('required')">
+        Last name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+      <mat-error *ngIf="form.get('email')?.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email')">
+        Enter a valid email
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" />
+      <mat-error *ngIf="form.get('password')?.hasError('required')">
+        Password is required
+      </mat-error>
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+        Register
+      </button>
+      <mat-progress-spinner
+        *ngIf="loading"
+        diameter="24"
+        mode="indeterminate">
+      </mat-progress-spinner>
+    </div>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+  </form>
+
+  <div class="register-section">
+    <p>
+      Already have an account?
+      <a routerLink="/login">Login here</a>
+    </p>
+  </div>
+</mat-card>

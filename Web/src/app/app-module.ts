@@ -8,6 +8,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { authInterceptor } from './services/auth.interceptor';
 import { LoginComponent } from './login/login.component';
 import { FavoritesComponent } from './favorites/favorites.component';
+import { RegisterComponent } from './register/register.component';
 
 
 
@@ -21,7 +22,8 @@ import { FavoritesComponent } from './favorites/favorites.component';
     AppRoutingModule,
     AppHeaderComponent,
     LoginComponent,
-    FavoritesComponent
+    FavoritesComponent,
+    RegisterComponent
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

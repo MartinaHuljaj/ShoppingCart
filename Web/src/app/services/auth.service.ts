@@ -37,4 +37,16 @@ export class AuthService {
         const token = this.token();
         return token !== null && token !== '';
     }
+
+    register(firstName: string, lastName: string, email: string, password: string): Observable<string> {
+        return this.http
+            .post<{ Message: string }>(`${this.baseUrl}/Auth/register`, {
+                firstName,
+                lastName,
+                email,
+                password
+            }).pipe(
+                map(response => response.Message)
+            );
+    }
 }

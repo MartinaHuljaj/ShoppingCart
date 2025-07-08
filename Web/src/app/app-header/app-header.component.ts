@@ -18,8 +18,11 @@ export class AppHeaderComponent implements OnInit {
     isAuthenticated = false;
     constructor(private router: Router, private auth: AuthService, private cdr: ChangeDetectorRef) { }
     ngOnInit() {
-        this.isAuthenticated = this.auth.isLoggedIn();
-        this.cdr.detectChanges();
+    this.auth.loggedIn$.subscribe(status => {
+      console.log('Authentication status:', status);
+      this.isAuthenticated = status;
+      this.cdr.markForCheck();
+    });
     }
     goToProducts() {
         this.router.navigate(['']);

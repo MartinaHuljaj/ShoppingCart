@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,7 +34,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -53,6 +54,7 @@ export class LoginComponent {
       next: () => {
         this.loading = false;
         this.router.navigateByUrl('/');
+        this.cdr.detectChanges();
       },
       error: err => {
         this.loading = false;

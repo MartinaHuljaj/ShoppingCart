@@ -21,7 +21,7 @@
         </mat-form-field>
 
         <div class="actions">
-            <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+            <button mat-raised-button color="primary" type="submit" [disabled]="loading" (ngSubmit)="onSubmit()">
                 Login
             </button>
             <mat-progress-spinner *ngIf="loading" diameter="24" mode="indeterminate"></mat-progress-spinner>

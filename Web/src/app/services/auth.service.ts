@@ -13,9 +13,12 @@ export class AuthService {
         return typeof window !== 'undefined' ? window.localStorage : null;
     }
 
-    private loggedInSubject = new BehaviorSubject<boolean>(!!this.getLocalStorage()?.getItem(this.TOKEN_KEY));
+    private loggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
+    public loggedIn$ = this.loggedInSubject.asObservable();
 
-
+    private hasToken(): boolean {
+        return !!localStorage.getItem(this.TOKEN_KEY);
+    }
 
     constructor(private http: HttpClient) { }
 
@@ -23,7 +26,10 @@ export class AuthService {
         return this.http
             .post<LoginResponse>(`${this.baseUrl}/Auth/login`, { email, password })
             .pipe(
-                tap(res => this.getLocalStorage()?.setItem(this.TOKEN_KEY, res.token)),
+                tap(res => {
+                    localStorage.setItem(this.TOKEN_KEY, res.token);
+                    this.loggedInSubject.next(true);  // Emit the new logged-in state!
+                }),
                 map(() => void 0)
             );
     }

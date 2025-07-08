@@ -12,6 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
+import { Product } from '../models/product.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-product-list',
@@ -27,7 +29,8 @@ import { BehaviorSubject } from 'rxjs';
         MatProgressSpinnerModule,
         MatButtonModule,
         MatIconModule,
-        CommonModule],
+        CommonModule,
+        FormsModule],
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -72,5 +75,12 @@ export class ProductListComponent implements OnInit {
         this.skip = 0;
         this.pageIndex = 0;
         this.fetchProducts();
+    }
+
+    addToCart(product: Product, quantity: number): void {
+        console.log('Add to cart:', product, 'Quantity:', quantity);
+    }
+    addToFavorites(product: Product): void {
+        console.log('Add to favorites:', product);
     }
 }

@@ -1,0 +1,17 @@
+<div *ngIf="favorites?.length! > 0; else noData" class="product-container">
+    <mat-card *ngFor="let favoriteProduct of favorites">
+        <mat-card-header>
+            <mat-card-title>{{ favoriteProduct.title }}</mat-card-title>
+            <mat-card-subtitle>{{ favoriteProduct.brand }} - {{ favoriteProduct.category }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>{{ favoriteProduct.description }}</p>
+            <p><strong>Price:</strong> ${{ favoriteProduct.price }}</p>
+            <p><strong>Stock:</strong> {{ favoriteProduct.stock }}</p>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<ng-template #noData>
+    <p>No products available.</p>
+</ng-template>

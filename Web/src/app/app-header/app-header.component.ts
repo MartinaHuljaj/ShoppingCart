@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,16 +16,17 @@ import { AuthService } from '../services/auth.service';
 })
 export class AppHeaderComponent implements OnInit {
     isAuthenticated = false;
-    constructor(private router: Router, private auth: AuthService) {}
+    constructor(private router: Router, private auth: AuthService, private cdr: ChangeDetectorRef) { }
     ngOnInit() {
         this.isAuthenticated = this.auth.isLoggedIn();
+        this.cdr.detectChanges();
     }
     onLogin() {
         this.router.navigate(['/login']);
     }
 
     onViewFavorites() {
-
+        this.router.navigate(['/favorites']);
     }
 
     onViewCart() {

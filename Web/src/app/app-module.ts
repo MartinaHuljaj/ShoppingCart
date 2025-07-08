@@ -3,10 +3,11 @@ import { BrowserModule, provideClientHydration, withEventReplay } from '@angular
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { AppHeaderComponent } from './app-header/app-header.component';
-import { AuthInterceptor } from './services/auth.interceptor';
+import { authInterceptor } from './services/auth.interceptor';
 import { LoginComponent } from './login/login.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 
 
 
@@ -19,14 +20,17 @@ import { LoginComponent } from './login/login.component';
     BrowserModule,
     AppRoutingModule,
     AppHeaderComponent,
-    LoginComponent
+    LoginComponent,
+    FavoritesComponent
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([authInterceptor])
+    )
   ],
   bootstrap: [App]
 })

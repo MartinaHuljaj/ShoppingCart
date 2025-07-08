@@ -13,5 +13,7 @@ export class FavoritesService {
   getFavorites(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.baseUrl}/Favorites/favorites`);
   }
-
+  addToFavorites(productId: number): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/Favorites/favorites/${productId}`, {});
+  }
 }

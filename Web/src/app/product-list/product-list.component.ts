@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { Product } from '../models/product.model';
 import { FormsModule } from '@angular/forms';
+import { FavoritesService } from '../services/favorites.service';
 
 @Component({
     selector: 'app-product-list',
@@ -48,7 +49,7 @@ export class ProductListComponent implements OnInit {
     sortBy = 'id';
     order: 'asc' | 'desc' = 'asc';
 
-    constructor(private productService: ProductService, private cdr: ChangeDetectorRef) { }
+    constructor(private productService: ProductService, private favoritesService: FavoritesService, private cdr: ChangeDetectorRef) { }
 
     ngOnInit(): void {
         this.fetchProducts();
@@ -81,6 +82,13 @@ export class ProductListComponent implements OnInit {
         console.log('Add to cart:', product, 'Quantity:', quantity);
     }
     addToFavorites(product: Product): void {
-        console.log('Add to favorites:', product);
+        this.favoritesService.addToFavorites(product.id).subscribe({
+            next: () => {
+                console.log('Product added to favorites:', product);
+            },
+            error: (err) => {
+                console.error('Error adding product to favorites:', err);
+            }
+        });
     }
 }

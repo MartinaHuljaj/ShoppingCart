@@ -78,8 +78,11 @@ namespace AbySalto.Mid.Infrastructure.Repositories
                     UserId = userId,
                     ProductId = product.ProductId
                 };
-                _context.Set<Product>().Add(product);
-                await _context.SaveChangesAsync();
+                if (GetProductAsync(product.ProductId) == null)
+                {
+                    _context.Set<Product>().Add(product);
+                    await _context.SaveChangesAsync();
+                }
 
                 _context.Set<FavoriteItem>().Add(favoriteItem);
                 await _context.SaveChangesAsync();

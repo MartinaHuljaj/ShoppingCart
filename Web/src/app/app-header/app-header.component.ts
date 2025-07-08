@@ -34,8 +34,12 @@ export class AppHeaderComponent implements OnInit {
         this.router.navigate(['/favorites']);
     }
 
-
     onViewBasket() {
         this.router.navigate(['/basket']);
+    }
+
+    onLogout() {
+        this.auth.logout();
+        this.router.navigate(['']);
     }
 }

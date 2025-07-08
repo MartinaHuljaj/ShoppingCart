@@ -84,5 +84,24 @@ namespace AbySalto.Mid.WebApi.Controllers
                 refreshToken = newRefreshToken
             });
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            if (userId == null)
+                return Unauthorized("User not authenticated.");
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("User not found.");
+
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new { message = "Logged out successfully." });
+        }
+
     }
 }

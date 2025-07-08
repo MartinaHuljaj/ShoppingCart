@@ -10,4 +10,7 @@
     <button *ngIf="isAuthenticated" mat-icon-button aria-label="Basket" (click)="onViewBasket()">
         <mat-icon>shopping_basket</mat-icon>
     </button>
+      <button *ngIf="isAuthenticated" mat-icon-button aria-label="Logout" (click)="onLogout()">
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>

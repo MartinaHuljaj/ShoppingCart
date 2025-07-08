@@ -55,4 +55,8 @@ export class AuthService {
                 map(response => response.Message)
             );
     }
+    logout(): void {
+        localStorage.removeItem(this.TOKEN_KEY);
+        this.loggedInSubject.next(false);
+    }
 }

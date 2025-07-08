@@ -21,6 +21,9 @@ export class AppHeaderComponent implements OnInit {
         this.isAuthenticated = this.auth.isLoggedIn();
         this.cdr.detectChanges();
     }
+    goToProducts() {
+        this.router.navigate(['']);
+    }
     onLogin() {
         this.router.navigate(['/login']);
     }
@@ -28,6 +31,7 @@ export class AppHeaderComponent implements OnInit {
     onViewFavorites() {
         this.router.navigate(['/favorites']);
     }
+
 
     onViewCart() {
 

@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="app-header">
-    <span class="app-title">Shopping App</span>
+    <button class="app-title" (click)="goToProducts()">Shopping App</button>
     <span class="spacer"></span>
     <button *ngIf="!isAuthenticated" mat-icon-button aria-label="Login" (click)="onLogin()">
         <mat-icon>login</mat-icon>

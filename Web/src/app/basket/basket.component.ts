@@ -53,7 +53,9 @@ export class BasketComponent implements OnInit {
       error: (err: any) => {
         this.snackBar.open('Failed to load basket. Please try again later.', 'Close', {
           duration: 3000,
-          panelClass: ['snackbar-error']
+          panelClass: ['snackbar-error'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
         });
       }
     });
@@ -65,13 +67,17 @@ export class BasketComponent implements OnInit {
         this.cdr.markForCheck();
         this.snackBar.open(res?.Message || 'Removed from favorites.', 'Close', {
           duration: 3000,
-          panelClass: ['snackbar-success']
+          panelClass: ['snackbar-success'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
         });
       },
       error: (err: any) => {
         this.snackBar.open(err.Message || 'Error while removing from basket', 'Close', {
           duration: 3000,
-          panelClass: ['snackbar-error']
+          panelClass: ['snackbar-error'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
         });
       }
     });

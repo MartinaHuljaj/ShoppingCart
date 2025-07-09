@@ -33,7 +33,8 @@ This project is a demo Web shop application. The goal was to implement a system 
 - Node.js and npm
 - Angular CLI (npm install -g @angular/cli)
 - Visual Studio 2022+ with ASP.NET and web development workload
-
+- SQL Server
+  
 ### Clone the Repository
 
 git clone https://github.com/MartinaHuljaj/ShoppingCart.git
@@ -41,7 +42,7 @@ git clone https://github.com/MartinaHuljaj/ShoppingCart.git
 ### Run the solution
 - Open solution with Visual Studio
 - In Package Manager Console select AbySalto.Mid.Infrastructure as the deafult project and run command Update-Database
-- Run the project
+- Run the project with http
 ## 🔗 Live Demo
 
 While running the backend, you are able to access the frontend (Angular) deployed on Netlify: https://shop-mhuljaj.netlify.app/

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from "@angular/core";
 import { Product } from "../models/product.model";
 import { FavoritesService } from "../services/favorites.service";
 import { MatCardModule } from "@angular/material/card";
@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-product-list',
@@ -35,6 +36,7 @@ import { MatTableModule } from "@angular/material/table";
 })
 export class FavoritesComponent implements OnInit {
     favorites: Product[] = [];
+    private snackBar = inject(MatSnackBar);
 
     constructor(private favoritesService: FavoritesService, private cdr: ChangeDetectorRef) { }
 
@@ -49,21 +51,39 @@ export class FavoritesComponent implements OnInit {
                 this.cdr.markForCheck();
             },
             error: (err) => {
-                console.error('Error loading favorites:', err);
+                console.log(err);
+                this.snackBar.open('Error while fetching favorites', 'Close', {
+                    duration: 3000,
+                    panelClass: ['snackbar-error'],
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top'
+                });
             }
         });
     }
 
     removeFromFavorites(productId: number): void {
         this.favoritesService.removeFromFavorites(productId).subscribe({
-            next: () => {
+            next: (res: any) => {
                 const updated = this.favorites.filter(item => item.id !== productId);
                 this.favorites = [...updated];
                 this.cdr.markForCheck();
+                this.snackBar.open(res?.Message || 'Removed from favorites.', 'Close', {
+                    duration: 3000,
+                    panelClass: ['snackbar-success'],
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top'
+                });
 
             },
             error: err => {
-                console.error('Error removing from favorites:', err);
+                console.log(err)
+                this.snackBar.open(err.Message || 'Error removing the item from favorites', 'Close', {
+                    duration: 3000,
+                    panelClass: ['snackbar-error'],
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top'
+                });
             }
         });
     }

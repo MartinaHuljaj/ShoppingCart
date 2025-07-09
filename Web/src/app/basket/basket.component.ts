@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
@@ -12,31 +12,33 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { BasketItem } from "../models/basket-item.model";
 import { BasketService } from "../services/basket.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
-    selector: 'app-product-list',
-    standalone: true,
-    imports: [
-        MatCardModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatProgressSpinnerModule,
-        MatButtonModule,
-        MatIconModule,
-        CommonModule],
-    templateUrl: './basket.component.html',
-    styleUrls: ['./basket.component.less'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-product-list',
+  standalone: true,
+  imports: [
+    MatCardModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTableModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatIconModule,
+    CommonModule],
+  templateUrl: './basket.component.html',
+  styleUrls: ['./basket.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
 export class BasketComponent implements OnInit {
   basketItems: BasketItem[] = [];
+  private snackBar = inject(MatSnackBar);
 
-  constructor(private basketService: BasketService, private cdr: ChangeDetectorRef) {}
+  constructor(private basketService: BasketService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.loadBasket();
@@ -49,19 +51,29 @@ export class BasketComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err: any) => {
-        console.error('Error loading favorites:', err);
+        this.snackBar.open('Failed to load basket. Please try again later.', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error']
+        });
       }
     });
   }
-    removeFromBasket(productId: number): void {
-        this.basketService.removeFromBasket(productId).subscribe({
-        next: () => {
-            this.basketItems = this.basketItems.filter(item => item.id !== productId);
-            this.cdr.markForCheck();
-        },
-        error: (err: any) => {
-            console.error('Error removing product from cart:', err);
-        }
+  removeFromBasket(productId: number): void {
+    this.basketService.removeFromBasket(productId).subscribe({
+      next: (res: any) => {
+        this.basketItems = this.basketItems.filter(item => item.id !== productId);
+        this.cdr.markForCheck();
+        this.snackBar.open(res?.Message || 'Removed from favorites.', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
         });
-    }
+      },
+      error: (err: any) => {
+        this.snackBar.open(err.Message || 'Error while removing from basket', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error']
+        });
+      }
+    });
+  }
 }

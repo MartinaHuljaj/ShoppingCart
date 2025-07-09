@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -31,6 +32,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
     loading = false;
     error = '';
+    private snackBar = inject(MatSnackBar);
 
     form: FormGroup;
 
@@ -57,6 +59,12 @@ export class RegisterComponent {
             error: err => {
                 this.loading = false;
                 this.error = err.error?.message || 'Registration failed';
+                this.snackBar.open(this.error, 'Close', {
+                    duration: 3000,
+                    panelClass: ['snackbar-error'],
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top'
+                });
             }
         })
     }

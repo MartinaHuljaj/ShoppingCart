@@ -23,9 +23,9 @@
             <mat-card-header>
                 <mat-card-title>{{ product.title }}</mat-card-title>
                 <mat-card-subtitle>{{ product.brand }} - {{ product.category }}</mat-card-subtitle>
-                <button mat-icon-button (click)="addToFavorites(product)" [color]="product.isFavorite ? 'warn' : ''"
+                <button *ngIf="isAuthenticated" mat-icon-button (click)="addToFavorites(product)" [color]="product.isFavorite ? 'warn' : ''"
                     class="favorite-btn">
-                    <mat-icon>{{ product.isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+                    <mat-icon>{{'favorite' }}</mat-icon>
                 </button>
             </mat-card-header>
 
@@ -33,7 +33,7 @@
                 <p>{{ product.description }}</p>
                 <p><strong>Price:</strong> ${{ product.price }}</p>
 
-                <div class="basket-actions">
+                <div *ngIf="isAuthenticated" class="basket-actions">
                     <mat-form-field appearance="outline" class="qty-input" density="compact">
                         <input #quantity matInput type="number" min="1" max="{{ product.stock }}" [value]="1" class="input-field"/>
                     </mat-form-field>

@@ -37,7 +37,7 @@ This project is a demo Web shop application. The goal was to implement a system 
   
 ### Clone the Repository
 
-git clone https://github.com/MartinaHuljaj/ShoppingCart.git
+git clone https://github.com/MartinaHuljaj/WebShop
 
 ### Run the solution
 - Open solution with Visual Studio

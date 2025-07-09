@@ -135,7 +135,8 @@ namespace AbySalto.Mid
             });
             builder.Services.AddMemoryCache();
 
-            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+            builder.Services.AddScoped<IFavoritesRepository, FavoritesRepository>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IFavoritesService, FavoritesService>();
             builder.Services.AddScoped<IBasketService, BasketService>();
